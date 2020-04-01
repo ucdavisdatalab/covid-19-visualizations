@@ -4,4 +4,4 @@ This repository contains code to produce data visualizations of data related to 
 # R_Code Folder Conents:
 
 ## JohnsHopkins_CountyData.R
-This file dowloads the Johns Hopkins COVID-19 data repository and builds visualizations for county-level data from 2020-03-22 forward in time.
+This file dowloads the [Johns Hopkins' CSSE COVID-19 data repository](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data) and builds visualizations for county-level data from 2020-03-22 forward in time.
