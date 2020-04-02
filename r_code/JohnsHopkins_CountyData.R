@@ -93,7 +93,7 @@ cases.plot<-function(dataset, counties_list){
   first.county<-subset(dataset, dataset$Admin2 == counties_list[1])
   ymax<-first.county[[length(names(first.county))]]
   plot(0, type='n', xlim=c(min(dates.axis), max(dates.axis)), ylim=c(0, ymax), main = "Not Normalized", xlab = "Date", ylab = "Number of Cases", xaxt="n")
-  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7)
+  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7, las=2)
   
   for(i in 1:length(counties_list)){
     #get the data
@@ -117,7 +117,7 @@ cases.normalized.plot<-function(dataset, counties_list, pop_data){
   ymax<-(first.county[[length(names(first.county))]]/first.county.pop[[2]])
   dates.axis<-as.Date(names(dataset)[4:length(dataset)], format="%Y-%m-%d")
   plot(0, type='n', xlim=c(min(dates.axis), max(dates.axis)), ylim=c(0, ymax), main = "Normalized by Population", xlab="Date", ylab = "Number of Cases/Population", xaxt="n")
-  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7)
+  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7, las=2)
   
   for(i in 1:length(counties_list)){
     #get the data
@@ -157,10 +157,10 @@ pop.plot<-function(counties_list){
 
 #..... what cities should we compare? 
 #..... ...Keeping a list of ones I've tried.
-compare.counties<-c("Santa Clara", "San Francisco", "Sacramento")
+#compare.counties<-c("Santa Clara", "San Francisco", "Sacramento")
 compare.counties<-c("Los Angeles", "Sacramento", "Yolo", "Solano")
-compare.counties<-c("San Francisco", "Sacramento", "Yolo", "Solano") #A good example
-compare.counties<-c("Santa Clara", "Alameda", "Contra Costa", "Marin", "Napa", "San Francisco", "San Mateo", "Solano", "Sonoma")
+#compare.counties<-c("San Francisco", "Sacramento", "Yolo", "Solano") #A good example
+#compare.counties<-c("Santa Clara", "Alameda", "Contra Costa", "Marin", "Napa", "San Francisco", "San Mateo", "Solano", "Sonoma")
 
 #..... Plot the cases graphs and legend in one image
 par(mfrow=c(1,1), mar=c(3.8, 4.1, 2.0, 2.0), oma=c(0,0,0,0))
