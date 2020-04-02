@@ -89,10 +89,11 @@ ca.wide<-pivot_wider(data=ca.long, id_cols = c("Admin2", "Province_State", "Coun
 
 #..... Plot Raw Case Numbers
 cases.plot<-function(dataset, counties_list){
-  xmax<-length(names(dataset))-3
+  dates.axis<-as.Date(names(dataset)[4:length(dataset)], format="%Y-%m-%d")
   first.county<-subset(dataset, dataset$Admin2 == counties_list[1])
   ymax<-first.county[[length(names(first.county))]]
-  plot(0, type='n', xlim=c(0, xmax), ylim=c(0, ymax), main = "Not Normalized", xlab = "Days Since 3/22/2020", ylab = "Number of Cases")
+  plot(0, type='n', xlim=c(min(dates.axis), max(dates.axis)), ylim=c(0, ymax), main = "Not Normalized", xlab = "Date", ylab = "Number of Cases", xaxt="n")
+  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7)
   
   for(i in 1:length(counties_list)){
     #get the data
@@ -104,18 +105,19 @@ cases.plot<-function(dataset, counties_list){
     colors.list<-rainbow(length(counties_list))
     
     #plot the data
-    lines(y=county.data[1,4:length(names(dataset))], x=1:(length(names(dataset))-3), col=colors.list[i], lwd=2)
+    lines(y=county.data[1,4:length(names(dataset))], x=dates.axis, col=colors.list[i], lwd=2)
   }
   #legend("topleft", col=colors.list, legend=counties_list, pch = 19, title = "Counties")
 }
 
 #..... Plot Data Normalized by Population
 cases.normalized.plot<-function(dataset, counties_list, pop_data){
-  xmax<-length(names(dataset))-3
   first.county<-subset(dataset, dataset$Admin2 == counties_list[1])
   first.county.pop<-subset(pop_data, pop_data[,1]== paste(counties_list[1], "County"))
   ymax<-(first.county[[length(names(first.county))]]/first.county.pop[[2]])
-  plot(0, type='n', xlim=c(0, xmax), ylim=c(0, ymax), main = "Normalized by Population", xlab = "Days Since 3/22/2020", ylab = "Number of Cases/Population")
+  dates.axis<-as.Date(names(dataset)[4:length(dataset)], format="%Y-%m-%d")
+  plot(0, type='n', xlim=c(min(dates.axis), max(dates.axis)), ylim=c(0, ymax), main = "Normalized by Population", xlab="Date", ylab = "Number of Cases/Population", xaxt="n")
+  axis(1, dates.axis, format(dates.axis, "%m-%d"), cex.axis=.7)
   
   for(i in 1:length(counties_list)){
     #get the data
@@ -128,7 +130,7 @@ cases.normalized.plot<-function(dataset, counties_list, pop_data){
     colors.list<-rainbow(length(counties_list))
     
     #plot the data
-    lines(y=(county.data[1,4:length(names(dataset))]/county.pop), x=1:(length(names(dataset))-3), col=colors.list[i], lwd=2)
+    lines(y=(county.data[1,4:length(names(dataset))]/county.pop), x=dates.axis, col=colors.list[i], lwd=2)
   }
   #legend("topleft", col=colors.list, legend=counties_list, pch = 19, title = "Counties")
 }
@@ -141,7 +143,7 @@ legend.pane<-function(counties_list){
   #colors.list<-topo.colors(length(counties_list))
   colors.list<-rainbow(length(counties_list))
   
-  legend("topleft", col=colors.list, legend=counties_list, pch = 19, title = "Counties", ncol = 5)
+  legend("top", col=colors.list, legend=counties_list, pch = 19, ncol = 4, bty = "n")
 }
 
 #..... Population histogram
@@ -161,7 +163,7 @@ compare.counties<-c("San Francisco", "Sacramento", "Yolo", "Solano") #A good exa
 compare.counties<-c("Santa Clara", "Alameda", "Contra Costa", "Marin", "Napa", "San Francisco", "San Mateo", "Solano", "Sonoma")
 
 #..... Plot the cases graphs and legend in one image
-par(mfrow=c(1,1), mar=c(4, 4.1, 3.8, 2.1))
+par(mfrow=c(1,1), mar=c(3.8, 4.1, 2.0, 2.0), oma=c(0,0,0,0))
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE), heights=c(2,1))
 cases.plot(dataset=ca.wide, counties_list=compare.counties)
 cases.normalized.plot(dataset=ca.wide, counties_list=compare.counties, pop_data = pop.table)
